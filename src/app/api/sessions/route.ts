@@ -102,15 +102,10 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
-    // Validate minimum duration when both start and end are known
+    // Check duration (warn but don't block)
     const effectiveStart = startedAt ? new Date(startedAt) : existing.startedAt;
     const effectiveEnd = endedAt ? new Date(endedAt) : existing.endedAt;
-    if (effectiveEnd && isSessionTooShort(effectiveStart, effectiveEnd)) {
-      return NextResponse.json(
-        { error: "too_short", message: "Session must be at least 20 minutes" },
-        { status: 400 }
-      );
-    }
+    const tooShort = effectiveEnd ? isSessionTooShort(effectiveStart, effectiveEnd) : false;
 
     const updateData: Record<string, unknown> = {};
     if (startedAt !== undefined) updateData.startedAt = new Date(startedAt);
@@ -123,7 +118,7 @@ export async function PATCH(req: NextRequest) {
       data: updateData,
     });
 
-    return NextResponse.json(session);
+    return NextResponse.json({ ...session, warning: tooShort ? "too_short" : undefined });
   } catch {
     return NextResponse.json(
       { error: "Internal server error" },

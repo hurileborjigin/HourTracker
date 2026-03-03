@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import { WorkSession } from "@/lib/types";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { format, startOfMonth, endOfMonth, differenceInSeconds } from "date-fns";
 import Navbar from "../components/Navbar";
 import DateRangeFilter from "../components/DateRangeFilter";
@@ -23,6 +23,9 @@ export default function EarningsPage() {
   const [endDate, setEndDate] = useState(() =>
     format(endOfMonth(new Date()), "yyyy-MM-dd")
   );
+  const [moneyHidden, setMoneyHidden] = useState(true);
+  const toggleHidden = useCallback(() => setMoneyHidden((h) => !h), []);
+  const mask = "👾";
 
   useEffect(() => {
     if (status === "unauthenticated") router.push("/login");
@@ -109,13 +112,13 @@ export default function EarningsPage() {
         {/* All-Time Summary */}
         <div className="animate-slide-up">
           <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">All Time</h2>
-          <div className="grid grid-cols-3 gap-2 sm:gap-3">
-            <StatsCard icon="💶" label="Salary" value={`€${allTotalSalary.toFixed(2)}`} />
-            <StatsCard icon="💰" label="Tips" value={`€${allTotalTips.toFixed(2)}`} />
-            <div className="glass rounded-xl p-2.5 sm:p-4 text-center">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3" onClick={toggleHidden}>
+            <StatsCard icon="💶" label="Salary" value={`€${allTotalSalary.toFixed(2)}`} hideable externalHidden={moneyHidden} />
+            <StatsCard icon="💰" label="Tips" value={`€${allTotalTips.toFixed(2)}`} hideable externalHidden={moneyHidden} />
+            <div className="glass rounded-xl p-2.5 sm:p-4 text-center cursor-pointer select-none active:scale-[0.97] transition-transform">
               <div className="text-[10px] sm:text-xs text-gray-400 mb-0.5">🏦 Total</div>
               <div className="text-sm sm:text-lg font-bold text-themed-light">
-                €{(allTotalSalary + allTotalTips).toFixed(2)}
+                {moneyHidden ? mask : `€${(allTotalSalary + allTotalTips).toFixed(2)}`}
               </div>
             </div>
           </div>
@@ -132,14 +135,14 @@ export default function EarningsPage() {
         {/* Period Summary */}
         <div className="animate-slide-up" style={{ animationDelay: "0.1s" }}>
           <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Selected Period</h2>
-          <div className="grid grid-cols-4 gap-2 sm:gap-3">
+          <div className="grid grid-cols-4 gap-2 sm:gap-3" onClick={toggleHidden}>
             <StatsCard icon="⏱" label="Hours" value={formatHours(periodTotalHours)} />
-            <StatsCard icon="💶" label="Salary" value={`€${periodTotalSalary.toFixed(2)}`} />
-            <StatsCard icon="💰" label="Tips" value={`€${periodTotalTips.toFixed(2)}`} />
-            <div className="glass rounded-xl p-2.5 sm:p-4 text-center">
+            <StatsCard icon="💶" label="Salary" value={`€${periodTotalSalary.toFixed(2)}`} hideable externalHidden={moneyHidden} />
+            <StatsCard icon="💰" label="Tips" value={`€${periodTotalTips.toFixed(2)}`} hideable externalHidden={moneyHidden} />
+            <div className="glass rounded-xl p-2.5 sm:p-4 text-center cursor-pointer select-none active:scale-[0.97] transition-transform">
               <div className="text-[10px] sm:text-xs text-gray-400 mb-0.5">🏦 Total</div>
               <div className="text-sm sm:text-lg font-bold text-themed-light">
-                €{(periodTotalSalary + periodTotalTips).toFixed(2)}
+                {moneyHidden ? mask : `€${(periodTotalSalary + periodTotalTips).toFixed(2)}`}
               </div>
             </div>
           </div>
@@ -187,13 +190,13 @@ export default function EarningsPage() {
                           {hours.toFixed(2)}
                         </td>
                         <td className="px-4 py-3 text-right font-mono text-themed-light">
-                          €{salary.toFixed(2)}
+                          {moneyHidden ? mask : `€${salary.toFixed(2)}`}
                         </td>
                         <td className="px-4 py-3 text-right font-mono text-yellow-400">
-                          {tip > 0 ? `€${tip.toFixed(2)}` : "-"}
+                          {moneyHidden ? mask : tip > 0 ? `€${tip.toFixed(2)}` : "-"}
                         </td>
                         <td className="px-4 py-3 text-right font-mono text-white font-semibold">
-                          €{(salary + tip).toFixed(2)}
+                          {moneyHidden ? mask : `€${(salary + tip).toFixed(2)}`}
                         </td>
                       </tr>
                     );
@@ -206,13 +209,13 @@ export default function EarningsPage() {
                       {periodTotalHours.toFixed(2)}h
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-themed-light">
-                      €{periodTotalSalary.toFixed(2)}
+                      {moneyHidden ? mask : `€${periodTotalSalary.toFixed(2)}`}
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-yellow-400">
-                      €{periodTotalTips.toFixed(2)}
+                      {moneyHidden ? mask : `€${periodTotalTips.toFixed(2)}`}
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-white">
-                      €{(periodTotalSalary + periodTotalTips).toFixed(2)}
+                      {moneyHidden ? mask : `€${(periodTotalSalary + periodTotalTips).toFixed(2)}`}
                     </td>
                   </tr>
                 </tfoot>

@@ -84,13 +84,10 @@ export default function DashboardPage() {
       }),
     });
 
-    if (!res.ok) {
+    if (res.ok) {
       const data = await res.json();
-      if (data.error === "too_short") {
-        setShowCheckOutModal(false);
-        setToastMessage("You gotta work at least 20 minutes to get paid!");
-        setActionLoading(false);
-        return;
+      if (data.warning === "too_short") {
+        setToastMessage("Nice try! 😄 That was less than 20 minutes — no pay for that one!");
       }
     }
 

@@ -99,29 +99,41 @@ export default function SummaryPage() {
     const titleRow = [`TIME SHEET - ${userName}`];
     const periodRow = [`${formattedStart} - ${formattedEnd}`];
     const blankRow: string[] = [];
-    const headerRow = ["Date", "In", "Out", "Hours", "Tip"];
 
-    const dataRows = completedSessions.map((s) => [
-      format(new Date(s.startedAt), "dd/MM/yy"),
-      format(new Date(s.startedAt), "h:mm a"),
-      s.endedAt ? format(new Date(s.endedAt), "h:mm a") : "",
-      (Math.round(getHours(s) * 100) / 100).toString(),
-      (s.tipAmount ?? 0) > 0 ? `€${(s.tipAmount ?? 0).toFixed(2)}` : "",
-    ]);
+    const headerRow = includeSalary
+      ? ["Date", "In", "Out", "Hours", "Tip"]
+      : ["Date", "In", "Out", "Hours"];
 
-    const totalRow = ["", "", "Total Hours", formatHours(totalHours), ""];
-    const tipsRow = ["", "", "Total Tips", "", `€${totalTips.toFixed(2)}`];
-    const allRows = [titleRow, periodRow, blankRow, headerRow, ...dataRows, blankRow, totalRow, tipsRow];
+    const dataRows = completedSessions.map((s) => {
+      const row = [
+        format(new Date(s.startedAt), "dd/MM/yy"),
+        format(new Date(s.startedAt), "h:mm a"),
+        s.endedAt ? format(new Date(s.endedAt), "h:mm a") : "",
+        (Math.round(getHours(s) * 100) / 100).toString(),
+      ];
+      if (includeSalary) {
+        row.push((s.tipAmount ?? 0) > 0 ? `€${(s.tipAmount ?? 0).toFixed(2)}` : "");
+      }
+      return row;
+    });
+
+    const totalRow = includeSalary
+      ? ["", "", "Total Hours", formatHours(totalHours), ""]
+      : ["", "", "Total Hours", formatHours(totalHours)];
+    const allRows = [titleRow, periodRow, blankRow, headerRow, ...dataRows, blankRow, totalRow];
 
     if (includeSalary) {
       allRows.push(
+        ["", "", "Total Tips", "", `€${totalTips.toFixed(2)}`],
         ["", "", "Hourly Rate", `€${hourlyRate.toFixed(2)}`, ""],
         ["", "", "Total Salary", `€${totalSalary.toFixed(2)}`, ""],
       );
     }
 
     const ws = XLSX.utils.aoa_to_sheet(allRows);
-    ws["!cols"] = [{ wch: 12 }, { wch: 12 }, { wch: 14 }, { wch: 12 }, { wch: 12 }];
+    ws["!cols"] = includeSalary
+      ? [{ wch: 12 }, { wch: 12 }, { wch: 14 }, { wch: 12 }, { wch: 12 }]
+      : [{ wch: 12 }, { wch: 12 }, { wch: 14 }, { wch: 12 }];
 
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Time Sheet");
