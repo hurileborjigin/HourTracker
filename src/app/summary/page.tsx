@@ -1,6 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import { WorkSession } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { format, startOfMonth, endOfMonth, differenceInSeconds } from "date-fns";
@@ -9,13 +10,6 @@ import Navbar from "../components/Navbar";
 import DateRangeFilter from "../components/DateRangeFilter";
 import StatsCard from "../components/StatsCard";
 
-interface WorkSession {
-  id: string;
-  startedAt: string;
-  endedAt: string | null;
-  note: string | null;
-  tipAmount: number | null;
-}
 
 export default function SummaryPage() {
   const { data: sessionData, status } = useSession();

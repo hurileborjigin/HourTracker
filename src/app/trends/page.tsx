@@ -1,6 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import { WorkSession } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useMemo } from "react";
 import {
@@ -32,12 +33,6 @@ import {
 } from "recharts";
 import Navbar from "../components/Navbar";
 
-interface WorkSession {
-  id: string;
-  startedAt: string;
-  endedAt: string | null;
-  tipAmount: number | null;
-}
 
 type Period = "weekly" | "monthly" | "yearly";
 

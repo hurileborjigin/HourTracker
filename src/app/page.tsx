@@ -1,6 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import { WorkSession } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { format, differenceInSeconds } from "date-fns";
@@ -9,16 +10,9 @@ import TimerDisplay from "./components/TimerDisplay";
 import SessionList from "./components/SessionList";
 import AddSessionForm from "./components/AddSessionForm";
 import CheckOutModal from "./components/CheckOutModal";
+import EditSessionModal from "./components/EditSessionModal";
 import Toast from "./components/Toast";
 
-interface WorkSession {
-  id: string;
-  startedAt: string;
-  endedAt: string | null;
-  note: string | null;
-  tipAmount: number | null;
-  createdAt: string;
-}
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
@@ -30,6 +24,7 @@ export default function DashboardPage() {
   const [actionLoading, setActionLoading] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
   const [showCheckOutModal, setShowCheckOutModal] = useState(false);
+  const [editingSession, setEditingSession] = useState<WorkSession | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const fetchSessions = useCallback(async () => {
@@ -142,6 +137,27 @@ export default function DashboardPage() {
     setActionLoading(false);
   }
 
+  async function handleEditSession(
+    id: string,
+    data: { startedAt: string; endedAt: string | null; note: string; tipAmount: number }
+  ): Promise<boolean> {
+    const res = await fetch("/api/sessions", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, ...data }),
+    });
+
+    if (!res.ok) {
+      const result = await res.json();
+      if (result.error === "too_short") {
+        return false;
+      }
+    }
+
+    await fetchSessions();
+    return true;
+  }
+
   function formatDuration(seconds: number) {
     const h = Math.floor(seconds / 3600);
     const m = Math.floor((seconds % 3600) / 60);
@@ -180,6 +196,15 @@ export default function DashboardPage() {
             onConfirm={handleCheckOut}
             onCancel={() => setShowCheckOutModal(false)}
             loading={actionLoading}
+          />
+        )}
+
+        {/* Edit Session Modal */}
+        {editingSession && (
+          <EditSessionModal
+            session={editingSession}
+            onClose={() => setEditingSession(null)}
+            onSave={handleEditSession}
           />
         )}
 
@@ -245,7 +270,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Recent Sessions */}
-        <SessionList sessions={sessions} onDelete={handleDelete} />
+        <SessionList sessions={sessions} onDelete={handleDelete} onEdit={setEditingSession} />
       </main>
     </div>
   );
