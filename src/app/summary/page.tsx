@@ -9,6 +9,7 @@ import * as XLSX from "xlsx";
 import Navbar from "../components/Navbar";
 import DateRangeFilter from "../components/DateRangeFilter";
 import StatsCard from "../components/StatsCard";
+import EditSessionModal from "../components/EditSessionModal";
 
 
 export default function SummaryPage() {
@@ -18,6 +19,8 @@ export default function SummaryPage() {
   const [hourlyRate, setHourlyRate] = useState(14);
   const [loading, setLoading] = useState(true);
   const [includeSalary, setIncludeSalary] = useState(false);
+  const [editingSession, setEditingSession] = useState<WorkSession | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
   const [startDate, setStartDate] = useState(() =>
     format(startOfMonth(new Date()), "yyyy-MM-dd")
   );
@@ -56,7 +59,21 @@ export default function SummaryPage() {
     }
 
     fetchData();
-  }, [status, startDate, endDate]);
+  }, [status, startDate, endDate, refreshKey]);
+
+  async function handleEditSession(
+    id: string,
+    data: { startedAt: string; endedAt: string | null; note: string; tipAmount: number }
+  ): Promise<boolean> {
+    const res = await fetch("/api/sessions", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, ...data }),
+    });
+    if (!res.ok) return false;
+    setRefreshKey((k) => k + 1);
+    return true;
+  }
 
   function getHours(s: WorkSession) {
     if (!s.endedAt) return 0;
@@ -129,6 +146,13 @@ export default function SummaryPage() {
   return (
     <div className="min-h-screen w-full overflow-x-hidden">
       <Navbar />
+      {editingSession && (
+        <EditSessionModal
+          session={editingSession}
+          onClose={() => setEditingSession(null)}
+          onSave={handleEditSession}
+        />
+      )}
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-6">
         {/* Page Title */}
         <div className="animate-fade-in">
@@ -198,6 +222,7 @@ export default function SummaryPage() {
                     <th className="px-4 py-3 text-left font-medium">End</th>
                     <th className="px-4 py-3 text-right font-medium">Hours</th>
                     <th className="px-4 py-3 text-right font-medium">Tip</th>
+                    <th className="px-2 py-3"></th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-brand-800/30">
@@ -217,6 +242,17 @@ export default function SummaryPage() {
                       </td>
                       <td className="px-4 py-3 text-right font-mono text-yellow-400">
                         {(s.tipAmount ?? 0) > 0 ? `€${(s.tipAmount ?? 0).toFixed(2)}` : "-"}
+                      </td>
+                      <td className="px-2 py-3">
+                        <button
+                          onClick={() => setEditingSession(s)}
+                          className="text-gray-500 hover:text-themed p-1.5 rounded-lg hover:bg-themed-muted/20 transition-all"
+                          title="Edit session"
+                        >
+                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          </svg>
+                        </button>
                       </td>
                     </tr>
                   ))}
