@@ -1,19 +1,33 @@
 import { PrismaClient } from "@prisma/client";
+import * as bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  // Find existing user
-  const user = await prisma.user.findUnique({
+  // Create user (or find existing)
+  const passwordHash = await bcrypt.hash("Huson732837!", 10);
+
+  const user = await prisma.user.upsert({
     where: { email: "hurile.borjigin@icloud.com" },
+    update: {},
+    create: {
+      name: "Hurile Borjigin",
+      email: "hurile.borjigin@icloud.com",
+      passwordHash,
+    },
   });
 
-  if (!user) {
-    console.error("❌ User hurile.borjigin@icloud.com not found in DB!");
-    process.exit(1);
-  }
+  // Create settings
+  await prisma.settings.upsert({
+    where: { userId: user.id },
+    update: {},
+    create: {
+      userId: user.id,
+      hourlyRate: 14.0,
+    },
+  });
 
-  console.log(`Found user: ${user.name ?? user.email} (${user.id})`);
+  console.log(`Found/created user: ${user.name ?? user.email} (${user.id})`);
 
   // All timesheet sessions (Europe/Berlin CET = UTC+1)
   const sessions: { date: string; inTime: string; outTime: string }[] = [
