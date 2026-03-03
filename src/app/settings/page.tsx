@@ -58,7 +58,7 @@ export default function SettingsPage() {
 
   if (status === "loading" || loading) {
     return (
-      <div className="min-h-screen">
+      <div className="min-h-screen w-full overflow-x-hidden">
         <Navbar />
         <div className="flex items-center justify-center py-20">
           <div className="animate-pulse-slow">
@@ -72,7 +72,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen w-full overflow-x-hidden">
       <Navbar />
       <main className="max-w-md mx-auto px-4 py-6">
         {/* Page Title */}

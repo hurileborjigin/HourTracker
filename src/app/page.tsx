@@ -166,7 +166,7 @@ export default function DashboardPage() {
   const { h, m, s } = formatDuration(elapsed);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen w-full overflow-x-hidden">
       <Navbar />
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-6">
         {/* Toast for too-short sessions */}

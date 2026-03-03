@@ -10,20 +10,29 @@
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 html {
-  width: 100%;
   overflow-x: hidden;
 }
 
 body {
-  @apply bg-brand-950 text-gray-100 antialiased;
+  @apply text-gray-100 antialiased;
   width: 100%;
+  max-width: 100vw;
   overflow-x: hidden;
   min-height: 100vh;
   background: linear-gradient(135deg, #052e16 0%, #14532d 50%, #0f2e1a 100%);
   background-attachment: fixed;
+  background-color: #052e16;
 }
 
 /* Mobile viewport fix */

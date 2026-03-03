@@ -119,7 +119,7 @@ export default function SummaryPage() {
 
   if (status === "loading" || loading) {
     return (
-      <div className="min-h-screen">
+      <div className="min-h-screen w-full overflow-x-hidden">
         <Navbar />
         <div className="flex items-center justify-center py-20">
           <div className="animate-pulse-slow">
@@ -133,7 +133,7 @@ export default function SummaryPage() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen w-full overflow-x-hidden">
       <Navbar />
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-6">
         {/* Page Title */}

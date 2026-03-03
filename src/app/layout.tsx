@@ -24,7 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-grid`}>
+      <body className={`${inter.className} bg-grid w-full max-w-[100vw] overflow-x-hidden`}>
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
