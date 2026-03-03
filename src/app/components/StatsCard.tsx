@@ -9,9 +9,9 @@ interface StatsCardProps {
 
 export default function StatsCard({ icon, label, value, className = "" }: StatsCardProps) {
   return (
-    <div className={`glass rounded-2xl p-4 sm:p-6 text-center ${className}`}>
-      <div className="text-xs sm:text-sm text-gray-400 mb-1">{icon} {label}</div>
-      <div className="text-lg sm:text-xl font-bold text-brand-400 truncate">{value}</div>
+    <div className={`glass rounded-xl p-2.5 sm:p-4 text-center ${className}`}>
+      <div className="text-[10px] sm:text-xs text-gray-400 mb-0.5">{icon} {label}</div>
+      <div className="text-sm sm:text-lg font-bold text-brand-400 truncate">{value}</div>
     </div>
   );
 }

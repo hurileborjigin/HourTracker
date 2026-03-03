@@ -114,12 +114,12 @@ export default function EarningsPage() {
         {/* All-Time Summary */}
         <div className="animate-slide-up">
           <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">All Time</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3">
             <StatsCard icon="💶" label="Salary" value={`€${allTotalSalary.toFixed(2)}`} />
             <StatsCard icon="💰" label="Tips" value={`€${allTotalTips.toFixed(2)}`} />
-            <div className="glass rounded-2xl p-4 sm:p-6 text-center">
-              <div className="text-sm text-gray-400 mb-1">🏦 Total</div>
-              <div className="text-lg sm:text-xl font-bold text-brand-300">
+            <div className="glass rounded-xl p-2.5 sm:p-4 text-center">
+              <div className="text-[10px] sm:text-xs text-gray-400 mb-0.5">🏦 Total</div>
+              <div className="text-sm sm:text-lg font-bold text-brand-300">
                 €{(allTotalSalary + allTotalTips).toFixed(2)}
               </div>
             </div>
@@ -137,13 +137,13 @@ export default function EarningsPage() {
         {/* Period Summary */}
         <div className="animate-slide-up" style={{ animationDelay: "0.1s" }}>
           <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Selected Period</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="grid grid-cols-4 gap-2 sm:gap-3">
             <StatsCard icon="⏱" label="Hours" value={formatHours(periodTotalHours)} />
             <StatsCard icon="💶" label="Salary" value={`€${periodTotalSalary.toFixed(2)}`} />
             <StatsCard icon="💰" label="Tips" value={`€${periodTotalTips.toFixed(2)}`} />
-            <div className="glass rounded-2xl p-4 sm:p-6 text-center">
-              <div className="text-sm text-gray-400 mb-1">🏦 Total</div>
-              <div className="text-lg sm:text-xl font-bold text-brand-300">
+            <div className="glass rounded-xl p-2.5 sm:p-4 text-center">
+              <div className="text-[10px] sm:text-xs text-gray-400 mb-0.5">🏦 Total</div>
+              <div className="text-sm sm:text-lg font-bold text-brand-300">
                 €{(periodTotalSalary + periodTotalTips).toFixed(2)}
               </div>
             </div>
