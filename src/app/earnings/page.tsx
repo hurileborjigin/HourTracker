@@ -119,7 +119,7 @@ export default function EarningsPage() {
             <StatsCard icon="💰" label="Tips" value={`€${allTotalTips.toFixed(2)}`} />
             <div className="glass rounded-2xl p-6 text-center">
               <div className="text-sm text-gray-400 mb-1">🏦 Total</div>
-              <div className="text-3xl font-bold text-brand-300">
+              <div className="text-2xl sm:text-3xl font-bold text-brand-300">
                 €{(allTotalSalary + allTotalTips).toFixed(2)}
               </div>
             </div>
@@ -143,7 +143,7 @@ export default function EarningsPage() {
             <StatsCard icon="💰" label="Tips" value={`€${periodTotalTips.toFixed(2)}`} />
             <div className="glass rounded-2xl p-6 text-center">
               <div className="text-sm text-gray-400 mb-1">🏦 Total</div>
-              <div className="text-3xl font-bold text-brand-300">
+              <div className="text-2xl sm:text-3xl font-bold text-brand-300">
                 €{(periodTotalSalary + periodTotalTips).toFixed(2)}
               </div>
             </div>

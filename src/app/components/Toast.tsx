@@ -28,7 +28,7 @@ export default function Toast({ message, onDismiss, duration = 5000 }: ToastProp
           visible ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-4"
         }`}
       >
-        <div className="text-5xl mb-3 animate-bounce-gentle">😄</div>
+        <div className="text-3xl mb-2 animate-bounce-gentle">😄</div>
         <p className="text-white font-semibold text-lg mb-1">Nice try!</p>
         <p className="text-gray-300 text-sm mb-4">{message}</p>
         <button

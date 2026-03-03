@@ -23,27 +23,27 @@ export default function TimerDisplay({ h, m, s, startedAt }: TimerDisplayProps) 
         </span>
       </div>
 
-      {/* Big animated timer */}
-      <div className="flex items-center justify-center gap-2 my-6">
-        <div className="glass-light rounded-xl px-4 py-3 min-w-[72px]">
-          <div className="text-4xl font-mono font-bold text-brand-300 timer-digit">
+      {/* Animated timer */}
+      <div className="flex items-center justify-center gap-1.5 sm:gap-2 my-5">
+        <div className="glass-light rounded-xl px-3 py-2.5 min-w-[60px] sm:min-w-[68px]">
+          <div className="text-2xl sm:text-3xl font-mono font-bold text-brand-300 timer-digit">
             {h.toString().padStart(2, "0")}
           </div>
-          <div className="text-[10px] text-gray-500 uppercase tracking-wider mt-1">Hours</div>
+          <div className="text-[9px] text-gray-500 uppercase tracking-wider mt-0.5">Hours</div>
         </div>
-        <div className="text-3xl font-bold text-brand-600 animate-pulse">:</div>
-        <div className="glass-light rounded-xl px-4 py-3 min-w-[72px]">
-          <div className="text-4xl font-mono font-bold text-brand-300 timer-digit">
+        <div className="text-xl sm:text-2xl font-bold text-brand-600 animate-pulse">:</div>
+        <div className="glass-light rounded-xl px-3 py-2.5 min-w-[60px] sm:min-w-[68px]">
+          <div className="text-2xl sm:text-3xl font-mono font-bold text-brand-300 timer-digit">
             {m.toString().padStart(2, "0")}
           </div>
-          <div className="text-[10px] text-gray-500 uppercase tracking-wider mt-1">Min</div>
+          <div className="text-[9px] text-gray-500 uppercase tracking-wider mt-0.5">Min</div>
         </div>
-        <div className="text-3xl font-bold text-brand-600 animate-pulse">:</div>
-        <div className="glass-light rounded-xl px-4 py-3 min-w-[72px]">
-          <div className="text-4xl font-mono font-bold text-brand-300 timer-digit">
+        <div className="text-xl sm:text-2xl font-bold text-brand-600 animate-pulse">:</div>
+        <div className="glass-light rounded-xl px-3 py-2.5 min-w-[60px] sm:min-w-[68px]">
+          <div className="text-2xl sm:text-3xl font-mono font-bold text-brand-300 timer-digit">
             {s.toString().padStart(2, "0")}
           </div>
-          <div className="text-[10px] text-gray-500 uppercase tracking-wider mt-1">Sec</div>
+          <div className="text-[9px] text-gray-500 uppercase tracking-wider mt-0.5">Sec</div>
         </div>
       </div>
     </>
