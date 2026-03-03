@@ -15,11 +15,12 @@ interface WorkSession {
 }
 
 export default function SummaryPage() {
-  const { status } = useSession();
+  const { data: sessionData, status } = useSession();
   const router = useRouter();
   const [sessions, setSessions] = useState<WorkSession[]>([]);
   const [hourlyRate, setHourlyRate] = useState(14);
   const [loading, setLoading] = useState(true);
+  const [includeSalary, setIncludeSalary] = useState(false);
   const [startDate, setStartDate] = useState(() =>
     format(startOfMonth(new Date()), "yyyy-MM-dd")
   );
@@ -76,26 +77,45 @@ export default function SummaryPage() {
   }
 
   function exportToExcel() {
-    const rows = completedSessions.map((s) => ({
-      Date: format(new Date(s.startedAt), "yyyy-MM-dd"),
-      Start: format(new Date(s.startedAt), "HH:mm"),
-      End: s.endedAt ? format(new Date(s.endedAt), "HH:mm") : "",
-      Hours: Math.round(getHours(s) * 100) / 100,
-      Note: s.note || "",
-    }));
+    const userName = sessionData?.user?.name || sessionData?.user?.email || "Employee";
+    const formattedStart = format(new Date(startDate), "dd.MM.yyyy");
+    const formattedEnd = format(new Date(endDate), "dd.MM.yyyy");
 
-    rows.push({
-      Date: "",
-      Start: "",
-      End: "TOTAL",
-      Hours: Math.round(totalHours * 100) / 100,
-      Note: `$${totalSalary.toFixed(2)} (@ $${hourlyRate}/hr)`,
-    });
+    // Build rows: title header first, then blank row, then data
+    const titleRow = [`TIME SHEET - ${userName}`];
+    const periodRow = [`${formattedStart} - ${formattedEnd}`];
+    const blankRow: string[] = [];
+    const headerRow = ["Date", "In", "Out", "Hours"];
 
-    const ws = XLSX.utils.json_to_sheet(rows);
+    const dataRows = completedSessions.map((s) => [
+      format(new Date(s.startedAt), "dd/MM/yy"),
+      format(new Date(s.startedAt), "h:mm a"),
+      s.endedAt ? format(new Date(s.endedAt), "h:mm a") : "",
+      (Math.round(getHours(s) * 100) / 100).toString(),
+    ]);
+
+    // Total hours row
+    const totalRow = ["", "", "Total Hours", formatHours(totalHours)];
+
+    // Assemble all rows
+    const allRows = [titleRow, periodRow, blankRow, headerRow, ...dataRows, blankRow, totalRow];
+
+    // Optionally add salary section
+    if (includeSalary) {
+      allRows.push(
+        ["", "", "Hourly Rate", `€${hourlyRate.toFixed(2)}`],
+        ["", "", "Total Salary", `€${totalSalary.toFixed(2)}`],
+      );
+    }
+
+    const ws = XLSX.utils.aoa_to_sheet(allRows);
+
+    // Set column widths
+    ws["!cols"] = [{ wch: 12 }, { wch: 12 }, { wch: 14 }, { wch: 12 }];
+
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Work Sessions");
-    XLSX.writeFile(wb, `hours_${startDate}_to_${endDate}.xlsx`);
+    XLSX.utils.book_append_sheet(wb, ws, "Time Sheet");
+    XLSX.writeFile(wb, `timesheet_${startDate}_to_${endDate}.xlsx`);
   }
 
   if (status === "loading" || loading) {
@@ -149,19 +169,33 @@ export default function SummaryPage() {
           <div className="bg-white rounded-xl shadow-md p-6 text-center">
             <div className="text-sm text-gray-500 mb-1">Total Salary</div>
             <div className="text-2xl font-bold text-green-600">
-              ${totalSalary.toFixed(2)}
+              €{totalSalary.toFixed(2)}
             </div>
           </div>
         </div>
 
-        {/* Export */}
-        <button
-          onClick={exportToExcel}
-          disabled={completedSessions.length === 0}
-          className="w-full bg-green-600 text-white py-3 rounded-xl font-medium hover:bg-green-700 disabled:opacity-50 transition-colors"
-        >
-          Export to Excel
-        </button>
+        {/* Export Options */}
+        <div className="bg-white rounded-xl shadow-md p-6 space-y-4">
+          <div className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              id="includeSalary"
+              checked={includeSalary}
+              onChange={(e) => setIncludeSalary(e.target.checked)}
+              className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+            />
+            <label htmlFor="includeSalary" className="text-sm font-medium text-gray-700">
+              Include salary in export
+            </label>
+          </div>
+          <button
+            onClick={exportToExcel}
+            disabled={completedSessions.length === 0}
+            className="w-full bg-green-600 text-white py-3 rounded-xl font-medium hover:bg-green-700 disabled:opacity-50 transition-colors"
+          >
+            Export to Excel
+          </button>
+        </div>
 
         {/* Sessions Table */}
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
@@ -216,7 +250,7 @@ export default function SummaryPage() {
                       {totalHours.toFixed(2)}
                     </td>
                     <td className="px-4 py-3 text-green-600">
-                      ${totalSalary.toFixed(2)}
+                      €{totalSalary.toFixed(2)}
                     </td>
                   </tr>
                 </tfoot>
