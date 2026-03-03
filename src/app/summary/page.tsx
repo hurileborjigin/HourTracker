@@ -81,7 +81,6 @@ export default function SummaryPage() {
     const formattedStart = format(new Date(startDate), "dd.MM.yyyy");
     const formattedEnd = format(new Date(endDate), "dd.MM.yyyy");
 
-    // Build rows: title header first, then blank row, then data
     const titleRow = [`TIME SHEET - ${userName}`];
     const periodRow = [`${formattedStart} - ${formattedEnd}`];
     const blankRow: string[] = [];
@@ -94,13 +93,9 @@ export default function SummaryPage() {
       (Math.round(getHours(s) * 100) / 100).toString(),
     ]);
 
-    // Total hours row
     const totalRow = ["", "", "Total Hours", formatHours(totalHours)];
-
-    // Assemble all rows
     const allRows = [titleRow, periodRow, blankRow, headerRow, ...dataRows, blankRow, totalRow];
 
-    // Optionally add salary section
     if (includeSalary) {
       allRows.push(
         ["", "", "Hourly Rate", `€${hourlyRate.toFixed(2)}`],
@@ -109,8 +104,6 @@ export default function SummaryPage() {
     }
 
     const ws = XLSX.utils.aoa_to_sheet(allRows);
-
-    // Set column widths
     ws["!cols"] = [{ wch: 12 }, { wch: 12 }, { wch: 14 }, { wch: 12 }];
 
     const wb = XLSX.utils.book_new();
@@ -120,137 +113,145 @@ export default function SummaryPage() {
 
   if (status === "loading" || loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen">
         <Navbar />
         <div className="flex items-center justify-center py-20">
-          <div className="text-gray-500">Loading...</div>
+          <div className="animate-pulse-slow">
+            <div className="w-12 h-12 bg-brand-500 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-brand-500/30">
+              H
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <Navbar />
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-6">
+        {/* Page Title */}
+        <div className="animate-fade-in">
+          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+            <span>📊</span> Summary
+          </h1>
+          <p className="text-gray-400 text-sm mt-1">View your hours and export timesheets</p>
+        </div>
+
         {/* Date Range */}
-        <div className="bg-white rounded-xl shadow-md p-6">
-          <h2 className="font-semibold text-lg mb-4">Date Range</h2>
+        <div className="glass rounded-2xl p-6 animate-slide-up">
+          <h2 className="font-semibold text-white mb-4 flex items-center gap-2">
+            <span>📅</span> Date Range
+          </h2>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1">From</label>
+              <label className="block text-sm font-medium mb-1.5 text-gray-300">From</label>
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full px-3 py-2.5 bg-brand-950/50 border border-brand-700/50 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none text-white transition-all"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">To</label>
+              <label className="block text-sm font-medium mb-1.5 text-gray-300">To</label>
               <input
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full px-3 py-2.5 bg-brand-950/50 border border-brand-700/50 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none text-white transition-all"
               />
             </div>
           </div>
         </div>
 
         {/* Totals */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="bg-white rounded-xl shadow-md p-6 text-center">
-            <div className="text-sm text-gray-500 mb-1">Total Hours</div>
-            <div className="text-2xl font-bold text-blue-600">
+        <div className="grid grid-cols-2 gap-4 animate-slide-up" style={{ animationDelay: "0.1s" }}>
+          <div className="glass rounded-2xl p-6 text-center">
+            <div className="text-sm text-gray-400 mb-1">⏱ Total Hours</div>
+            <div className="text-3xl font-bold text-brand-400">
               {formatHours(totalHours)}
             </div>
           </div>
-          <div className="bg-white rounded-xl shadow-md p-6 text-center">
-            <div className="text-sm text-gray-500 mb-1">Total Salary</div>
-            <div className="text-2xl font-bold text-green-600">
+          <div className="glass rounded-2xl p-6 text-center">
+            <div className="text-sm text-gray-400 mb-1">💰 Total Salary</div>
+            <div className="text-3xl font-bold text-brand-300">
               €{totalSalary.toFixed(2)}
             </div>
           </div>
         </div>
 
         {/* Export Options */}
-        <div className="bg-white rounded-xl shadow-md p-6 space-y-4">
+        <div className="glass rounded-2xl p-6 space-y-4 animate-slide-up" style={{ animationDelay: "0.15s" }}>
           <div className="flex items-center gap-3">
             <input
               type="checkbox"
               id="includeSalary"
               checked={includeSalary}
               onChange={(e) => setIncludeSalary(e.target.checked)}
-              className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+              className="w-4 h-4 rounded bg-brand-950 border-brand-700 text-brand-500 focus:ring-brand-500 focus:ring-offset-0"
             />
-            <label htmlFor="includeSalary" className="text-sm font-medium text-gray-700">
+            <label htmlFor="includeSalary" className="text-sm font-medium text-gray-300">
               Include salary in export
             </label>
           </div>
           <button
             onClick={exportToExcel}
             disabled={completedSessions.length === 0}
-            className="w-full bg-green-600 text-white py-3 rounded-xl font-medium hover:bg-green-700 disabled:opacity-50 transition-colors"
+            className="w-full bg-gradient-to-r from-brand-600 to-brand-500 text-white py-3.5 rounded-xl font-semibold hover:from-brand-500 hover:to-brand-400 disabled:opacity-50 transition-all duration-300 shadow-lg shadow-brand-600/25 hover:shadow-brand-500/40 hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2"
           >
-            Export to Excel
+            <span>📥</span> Export to Excel
           </button>
         </div>
 
         {/* Sessions Table */}
-        <div className="bg-white rounded-xl shadow-md overflow-hidden">
-          <div className="px-6 py-4 border-b">
-            <h2 className="font-semibold text-lg">
+        <div className="glass rounded-2xl overflow-hidden animate-slide-up" style={{ animationDelay: "0.2s" }}>
+          <div className="px-6 py-4 border-b border-brand-800/50">
+            <h2 className="font-semibold text-white">
               Sessions ({completedSessions.length})
             </h2>
           </div>
           {completedSessions.length === 0 ? (
-            <div className="px-6 py-8 text-center text-gray-400">
-              No completed sessions in this range.
+            <div className="px-6 py-12 text-center text-gray-500">
+              <div className="text-4xl mb-3">📭</div>
+              <div>No completed sessions in this range.</div>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-gray-50 text-gray-500">
+                <thead className="bg-brand-900/50 text-gray-400">
                   <tr>
-                    <th className="px-4 py-3 text-left">Date</th>
-                    <th className="px-4 py-3 text-left">Start</th>
-                    <th className="px-4 py-3 text-left">End</th>
-                    <th className="px-4 py-3 text-right">Hours</th>
-                    <th className="px-4 py-3 text-left">Note</th>
+                    <th className="px-4 py-3 text-left font-medium">Date</th>
+                    <th className="px-4 py-3 text-left font-medium">Start</th>
+                    <th className="px-4 py-3 text-left font-medium">End</th>
+                    <th className="px-4 py-3 text-right font-medium">Hours</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y">
-                  {completedSessions.map((s) => (
-                    <tr key={s.id} className="hover:bg-gray-50">
-                      <td className="px-4 py-3">
+                <tbody className="divide-y divide-brand-800/30">
+                  {completedSessions.map((s, i) => (
+                    <tr key={s.id} className="hover:bg-brand-800/20 transition-colors animate-fade-in" style={{ animationDelay: `${i * 0.03}s` }}>
+                      <td className="px-4 py-3 text-gray-200 font-medium">
                         {format(new Date(s.startedAt), "MMM d")}
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 text-gray-300">
                         {format(new Date(s.startedAt), "h:mm a")}
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 text-gray-300">
                         {s.endedAt && format(new Date(s.endedAt), "h:mm a")}
                       </td>
-                      <td className="px-4 py-3 text-right font-mono">
+                      <td className="px-4 py-3 text-right font-mono text-brand-400">
                         {getHours(s).toFixed(2)}
-                      </td>
-                      <td className="px-4 py-3 text-gray-500 max-w-[150px] truncate">
-                        {s.note || "—"}
                       </td>
                     </tr>
                   ))}
                 </tbody>
-                <tfoot className="bg-gray-50 font-semibold">
+                <tfoot className="bg-brand-900/50 font-semibold">
                   <tr>
-                    <td className="px-4 py-3" colSpan={3}>
+                    <td className="px-4 py-3 text-white" colSpan={3}>
                       Total
                     </td>
-                    <td className="px-4 py-3 text-right font-mono">
-                      {totalHours.toFixed(2)}
-                    </td>
-                    <td className="px-4 py-3 text-green-600">
-                      €{totalSalary.toFixed(2)}
+                    <td className="px-4 py-3 text-right font-mono text-brand-300">
+                      {totalHours.toFixed(2)}h
                     </td>
                   </tr>
                 </tfoot>
