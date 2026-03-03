@@ -20,7 +20,7 @@ export default function StatsCard({ icon, label, value, className = "", hideable
     >
       <div className="text-[10px] sm:text-xs text-gray-400 mb-0.5">{icon} {label}</div>
       <div className="text-sm sm:text-lg font-bold text-themed truncate transition-all duration-200">
-        {hidden ? "👁" : value}
+        {hidden ? "🙈" : value}
       </div>
     </div>
   );
