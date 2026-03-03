@@ -114,7 +114,7 @@ export default function EarningsPage() {
         {/* All-Time Summary */}
         <div className="animate-slide-up">
           <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">All Time</h2>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             <StatsCard icon="💶" label="Salary" value={`€${allTotalSalary.toFixed(2)}`} />
             <StatsCard icon="💰" label="Tips" value={`€${allTotalTips.toFixed(2)}`} />
             <div className="glass rounded-2xl p-6 text-center">

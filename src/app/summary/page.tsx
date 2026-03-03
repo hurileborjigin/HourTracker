@@ -153,7 +153,7 @@ export default function SummaryPage() {
         />
 
         {/* Totals */}
-        <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.1s" }}>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.1s" }}>
           <StatsCard icon="⏱" label="Hours" value={formatHours(totalHours)} />
           <StatsCard icon="💶" label="Salary" value={`€${totalSalary.toFixed(2)}`} />
           <StatsCard icon="💰" label="Tips" value={`€${totalTips.toFixed(2)}`} />
