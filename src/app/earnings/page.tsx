@@ -117,9 +117,9 @@ export default function EarningsPage() {
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             <StatsCard icon="💶" label="Salary" value={`€${allTotalSalary.toFixed(2)}`} />
             <StatsCard icon="💰" label="Tips" value={`€${allTotalTips.toFixed(2)}`} />
-            <div className="glass rounded-2xl p-6 text-center">
+            <div className="glass rounded-2xl p-4 sm:p-6 text-center">
               <div className="text-sm text-gray-400 mb-1">🏦 Total</div>
-              <div className="text-2xl sm:text-3xl font-bold text-brand-300">
+              <div className="text-lg sm:text-xl font-bold text-brand-300">
                 €{(allTotalSalary + allTotalTips).toFixed(2)}
               </div>
             </div>
@@ -141,9 +141,9 @@ export default function EarningsPage() {
             <StatsCard icon="⏱" label="Hours" value={formatHours(periodTotalHours)} />
             <StatsCard icon="💶" label="Salary" value={`€${periodTotalSalary.toFixed(2)}`} />
             <StatsCard icon="💰" label="Tips" value={`€${periodTotalTips.toFixed(2)}`} />
-            <div className="glass rounded-2xl p-6 text-center">
+            <div className="glass rounded-2xl p-4 sm:p-6 text-center">
               <div className="text-sm text-gray-400 mb-1">🏦 Total</div>
-              <div className="text-2xl sm:text-3xl font-bold text-brand-300">
+              <div className="text-lg sm:text-xl font-bold text-brand-300">
                 €{(periodTotalSalary + periodTotalTips).toFixed(2)}
               </div>
             </div>
