@@ -2,6 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSessionUser, unauthorized } from "@/lib/session";
 
+const MIN_SESSION_MINUTES = 20;
+
+function isSessionTooShort(startedAt: Date, endedAt: Date): boolean {
+  const diffMs = endedAt.getTime() - startedAt.getTime();
+  return diffMs < MIN_SESSION_MINUTES * 60 * 1000;
+}
+
 export async function GET(req: NextRequest) {
   const user = await getSessionUser();
   if (!user) return unauthorized();
@@ -34,7 +41,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { startedAt, endedAt, note } = body;
+    const { startedAt, endedAt, note, tipAmount } = body;
 
     if (!startedAt) {
       return NextResponse.json(
@@ -43,12 +50,25 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // If both startedAt and endedAt provided (manual session), validate minimum duration
+    if (endedAt) {
+      const start = new Date(startedAt);
+      const end = new Date(endedAt);
+      if (isSessionTooShort(start, end)) {
+        return NextResponse.json(
+          { error: "too_short", message: "Session must be at least 20 minutes" },
+          { status: 400 }
+        );
+      }
+    }
+
     const session = await prisma.workSession.create({
       data: {
         userId: user.id,
         startedAt: new Date(startedAt),
         endedAt: endedAt ? new Date(endedAt) : null,
         note: note || null,
+        tipAmount: tipAmount ? parseFloat(tipAmount) : 0,
       },
     });
 
@@ -66,7 +86,7 @@ export async function PATCH(req: NextRequest) {
   if (!user) return unauthorized();
 
   try {
-    const { id, endedAt } = await req.json();
+    const { id, endedAt, tipAmount } = await req.json();
 
     if (!id) {
       return NextResponse.json({ error: "id is required" }, { status: 400 });
@@ -82,9 +102,24 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
+    // Validate minimum duration when checking out
+    if (endedAt) {
+      const end = new Date(endedAt);
+      if (isSessionTooShort(existing.startedAt, end)) {
+        return NextResponse.json(
+          { error: "too_short", message: "Session must be at least 20 minutes" },
+          { status: 400 }
+        );
+      }
+    }
+
+    const updateData: Record<string, unknown> = {};
+    if (endedAt !== undefined) updateData.endedAt = endedAt ? new Date(endedAt) : null;
+    if (tipAmount !== undefined) updateData.tipAmount = parseFloat(tipAmount) || 0;
+
     const session = await prisma.workSession.update({
       where: { id },
-      data: { endedAt: endedAt ? new Date(endedAt) : null },
+      data: updateData,
     });
 
     return NextResponse.json(session);

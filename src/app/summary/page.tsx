@@ -6,12 +6,15 @@ import { useEffect, useState } from "react";
 import { format, startOfMonth, endOfMonth, differenceInSeconds } from "date-fns";
 import * as XLSX from "xlsx";
 import Navbar from "../components/Navbar";
+import DateRangeFilter from "../components/DateRangeFilter";
+import StatsCard from "../components/StatsCard";
 
 interface WorkSession {
   id: string;
   startedAt: string;
   endedAt: string | null;
   note: string | null;
+  tipAmount: number | null;
 }
 
 export default function SummaryPage() {
@@ -69,6 +72,7 @@ export default function SummaryPage() {
   const completedSessions = sessions.filter((s) => s.endedAt);
   const totalHours = completedSessions.reduce((acc, s) => acc + getHours(s), 0);
   const totalSalary = totalHours * hourlyRate;
+  const totalTips = completedSessions.reduce((acc, s) => acc + (s.tipAmount ?? 0), 0);
 
   function formatHours(hours: number) {
     const h = Math.floor(hours);
@@ -84,27 +88,29 @@ export default function SummaryPage() {
     const titleRow = [`TIME SHEET - ${userName}`];
     const periodRow = [`${formattedStart} - ${formattedEnd}`];
     const blankRow: string[] = [];
-    const headerRow = ["Date", "In", "Out", "Hours"];
+    const headerRow = ["Date", "In", "Out", "Hours", "Tip"];
 
     const dataRows = completedSessions.map((s) => [
       format(new Date(s.startedAt), "dd/MM/yy"),
       format(new Date(s.startedAt), "h:mm a"),
       s.endedAt ? format(new Date(s.endedAt), "h:mm a") : "",
       (Math.round(getHours(s) * 100) / 100).toString(),
+      (s.tipAmount ?? 0) > 0 ? `€${(s.tipAmount ?? 0).toFixed(2)}` : "",
     ]);
 
-    const totalRow = ["", "", "Total Hours", formatHours(totalHours)];
-    const allRows = [titleRow, periodRow, blankRow, headerRow, ...dataRows, blankRow, totalRow];
+    const totalRow = ["", "", "Total Hours", formatHours(totalHours), ""];
+    const tipsRow = ["", "", "Total Tips", "", `€${totalTips.toFixed(2)}`];
+    const allRows = [titleRow, periodRow, blankRow, headerRow, ...dataRows, blankRow, totalRow, tipsRow];
 
     if (includeSalary) {
       allRows.push(
-        ["", "", "Hourly Rate", `€${hourlyRate.toFixed(2)}`],
-        ["", "", "Total Salary", `€${totalSalary.toFixed(2)}`],
+        ["", "", "Hourly Rate", `€${hourlyRate.toFixed(2)}`, ""],
+        ["", "", "Total Salary", `€${totalSalary.toFixed(2)}`, ""],
       );
     }
 
     const ws = XLSX.utils.aoa_to_sheet(allRows);
-    ws["!cols"] = [{ wch: 12 }, { wch: 12 }, { wch: 14 }, { wch: 12 }];
+    ws["!cols"] = [{ wch: 12 }, { wch: 12 }, { wch: 14 }, { wch: 12 }, { wch: 12 }];
 
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Time Sheet");
@@ -139,46 +145,18 @@ export default function SummaryPage() {
         </div>
 
         {/* Date Range */}
-        <div className="glass rounded-2xl p-6 animate-slide-up">
-          <h2 className="font-semibold text-white mb-4 flex items-center gap-2">
-            <span>📅</span> Date Range
-          </h2>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-1.5 text-gray-300">From</label>
-              <input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className="w-full px-3 py-2.5 bg-brand-950/50 border border-brand-700/50 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none text-white transition-all"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1.5 text-gray-300">To</label>
-              <input
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className="w-full px-3 py-2.5 bg-brand-950/50 border border-brand-700/50 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none text-white transition-all"
-              />
-            </div>
-          </div>
-        </div>
+        <DateRangeFilter
+          startDate={startDate}
+          endDate={endDate}
+          onStartChange={setStartDate}
+          onEndChange={setEndDate}
+        />
 
         {/* Totals */}
-        <div className="grid grid-cols-2 gap-4 animate-slide-up" style={{ animationDelay: "0.1s" }}>
-          <div className="glass rounded-2xl p-6 text-center">
-            <div className="text-sm text-gray-400 mb-1">⏱ Total Hours</div>
-            <div className="text-3xl font-bold text-brand-400">
-              {formatHours(totalHours)}
-            </div>
-          </div>
-          <div className="glass rounded-2xl p-6 text-center">
-            <div className="text-sm text-gray-400 mb-1">💰 Total Salary</div>
-            <div className="text-3xl font-bold text-brand-300">
-              €{totalSalary.toFixed(2)}
-            </div>
-          </div>
+        <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.1s" }}>
+          <StatsCard icon="⏱" label="Hours" value={formatHours(totalHours)} />
+          <StatsCard icon="💶" label="Salary" value={`€${totalSalary.toFixed(2)}`} />
+          <StatsCard icon="💰" label="Tips" value={`€${totalTips.toFixed(2)}`} />
         </div>
 
         {/* Export Options */}
@@ -225,6 +203,7 @@ export default function SummaryPage() {
                     <th className="px-4 py-3 text-left font-medium">Start</th>
                     <th className="px-4 py-3 text-left font-medium">End</th>
                     <th className="px-4 py-3 text-right font-medium">Hours</th>
+                    <th className="px-4 py-3 text-right font-medium">Tip</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-brand-800/30">
@@ -242,6 +221,9 @@ export default function SummaryPage() {
                       <td className="px-4 py-3 text-right font-mono text-brand-400">
                         {getHours(s).toFixed(2)}
                       </td>
+                      <td className="px-4 py-3 text-right font-mono text-yellow-400">
+                        {(s.tipAmount ?? 0) > 0 ? `€${(s.tipAmount ?? 0).toFixed(2)}` : "-"}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -252,6 +234,9 @@ export default function SummaryPage() {
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-brand-300">
                       {totalHours.toFixed(2)}h
+                    </td>
+                    <td className="px-4 py-3 text-right font-mono text-yellow-400">
+                      €{totalTips.toFixed(2)}
                     </td>
                   </tr>
                 </tfoot>

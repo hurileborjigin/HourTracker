@@ -12,6 +12,8 @@ export default function Navbar() {
   const navItems = [
     { href: "/", label: "Dashboard", icon: "⏱" },
     { href: "/summary", label: "Summary", icon: "📊" },
+    { href: "/trends", label: "Trends", icon: "📈" },
+    { href: "/earnings", label: "Earnings", icon: "💰" },
     { href: "/settings", label: "Settings", icon: "⚙️" },
   ];
 
@@ -36,7 +38,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden sm:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-1">
             {navItems.map((item) => (
               <Link key={item.href} href={item.href} className={linkClass(item.href)}>
                 <span>{item.icon}</span>
@@ -55,7 +57,7 @@ export default function Navbar() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="sm:hidden p-2 rounded-lg hover:bg-brand-800/60 transition-colors"
+            className="md:hidden p-2 rounded-lg hover:bg-brand-800/60 transition-colors"
           >
             <svg className="w-6 h-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               {menuOpen ? (
@@ -69,7 +71,7 @@ export default function Navbar() {
 
         {/* Mobile menu */}
         {menuOpen && (
-          <div className="sm:hidden pb-4 pt-2 space-y-1 animate-slide-up">
+          <div className="md:hidden pb-4 pt-2 space-y-1 animate-slide-up">
             {navItems.map((item) => (
               <Link
                 key={item.href}
