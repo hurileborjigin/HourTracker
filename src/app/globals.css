@@ -55,6 +55,8 @@ body {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(34, 197, 94, 0.15);
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .glass-light {
