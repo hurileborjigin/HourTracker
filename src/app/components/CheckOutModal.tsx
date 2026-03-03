@@ -31,7 +31,7 @@ export default function CheckOutModal({ onConfirm, onCancel, loading }: CheckOut
               value={tip}
               onChange={(e) => setTip(e.target.value)}
               placeholder="0.00"
-              className="w-full pl-8 pr-3 py-2.5 bg-brand-950/50 border border-brand-700/50 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none text-white transition-all"
+              className="w-full pl-8 pr-3 py-2.5 bg-black/20 border border-themed/30 rounded-xl focus:ring-2 focus:ring-current focus:border-current outline-none text-white transition-all"
             />
           </div>
         </div>
@@ -52,7 +52,7 @@ export default function CheckOutModal({ onConfirm, onCancel, loading }: CheckOut
           <button
             onClick={onCancel}
             disabled={loading}
-            className="px-5 py-3 rounded-xl border border-brand-700/50 text-gray-400 hover:bg-brand-800/40 hover:text-gray-200 transition-all"
+            className="px-5 py-3 rounded-xl border border-themed/30 text-gray-400 hover:bg-themed-muted/40 hover:text-gray-200 transition-all"
           >
             Cancel
           </button>

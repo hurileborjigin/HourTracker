@@ -51,11 +51,11 @@ export default function RegisterPage() {
       <div className="w-full max-w-sm animate-fade-in">
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-8">
-          <div className="w-12 h-12 bg-gradient-to-br from-brand-500 to-brand-600 rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-brand-500/30">
+          <div className="w-12 h-12 btn-themed rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-themed">
             H
           </div>
           <span className="text-3xl font-bold text-white">
-            Hour<span className="text-brand-400">Tracker</span>
+            Hour<span className="text-themed">Tracker</span>
           </span>
         </div>
 
@@ -75,7 +75,7 @@ export default function RegisterPage() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-3 bg-brand-950/50 border border-brand-700/50 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none text-white placeholder-gray-600 transition-all"
+              className="w-full px-4 py-3 bg-black/20 border border-themed/30 rounded-xl focus:ring-2 focus:ring-current focus:border-current outline-none text-white placeholder-gray-600 transition-all"
               placeholder="Your name"
             />
           </div>
@@ -87,7 +87,7 @@ export default function RegisterPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 bg-brand-950/50 border border-brand-700/50 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none text-white placeholder-gray-600 transition-all"
+              className="w-full px-4 py-3 bg-black/20 border border-themed/30 rounded-xl focus:ring-2 focus:ring-current focus:border-current outline-none text-white placeholder-gray-600 transition-all"
               placeholder="you@example.com"
             />
           </div>
@@ -100,7 +100,7 @@ export default function RegisterPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
-              className="w-full px-4 py-3 bg-brand-950/50 border border-brand-700/50 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none text-white placeholder-gray-600 transition-all"
+              className="w-full px-4 py-3 bg-black/20 border border-themed/30 rounded-xl focus:ring-2 focus:ring-current focus:border-current outline-none text-white placeholder-gray-600 transition-all"
               placeholder="At least 6 characters"
             />
           </div>
@@ -112,7 +112,7 @@ export default function RegisterPage() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 bg-brand-950/50 border border-brand-700/50 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none text-white placeholder-gray-600 transition-all"
+              className="w-full px-4 py-3 bg-black/20 border border-themed/30 rounded-xl focus:ring-2 focus:ring-current focus:border-current outline-none text-white placeholder-gray-600 transition-all"
               placeholder="Repeat your password"
             />
           </div>
@@ -120,7 +120,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-brand-600 to-brand-500 text-white py-3 rounded-xl font-semibold hover:from-brand-500 hover:to-brand-400 disabled:opacity-50 transition-all duration-300 shadow-lg shadow-brand-600/25 hover:shadow-brand-500/40 hover:scale-[1.01] active:scale-[0.99]"
+            className="w-full btn-themed text-white py-3 rounded-xl font-semibold  disabled:opacity-50 transition-all duration-300 shadow-lg shadow-themed hover:shadow-themed hover:scale-[1.01] active:scale-[0.99]"
           >
             {loading ? (
               <span className="flex items-center justify-center gap-2">
@@ -133,7 +133,7 @@ export default function RegisterPage() {
 
         <p className="text-center text-sm text-gray-500 mt-6">
           Already have an account?{" "}
-          <Link href="/login" className="text-brand-400 hover:text-brand-300 font-medium transition-colors">
+          <Link href="/login" className="text-themed hover:text-themed-light font-medium transition-colors">
             Sign in
           </Link>
         </p>

@@ -27,7 +27,7 @@ function sessionDuration(s: WorkSession) {
 export default function SessionList({ sessions, onDelete }: SessionListProps) {
   return (
     <div className="glass rounded-2xl overflow-hidden animate-slide-up" style={{ animationDelay: "0.2s" }}>
-      <div className="px-6 py-4 border-b border-brand-800/50">
+      <div className="px-6 py-4 border-b border-themed/20">
         <h2 className="font-semibold text-lg text-white flex items-center gap-2">
           <span>📋</span> Recent Sessions
         </h2>
@@ -42,7 +42,7 @@ export default function SessionList({ sessions, onDelete }: SessionListProps) {
           {sessions.map((s, i) => (
             <li
               key={s.id}
-              className="px-6 py-4 flex items-center justify-between gap-4 hover:bg-brand-800/20 transition-colors animate-fade-in"
+              className="px-6 py-4 flex items-center justify-between gap-4 hover:bg-themed-muted/20 transition-colors animate-fade-in"
               style={{ animationDelay: `${i * 0.05}s` }}
             >
               <div className="min-w-0 flex-1">
@@ -54,7 +54,7 @@ export default function SessionList({ sessions, onDelete }: SessionListProps) {
                   {s.endedAt && ` → ${format(new Date(s.endedAt), "h:mm a")}`}
                 </div>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  <span className="text-xs font-mono text-brand-400 bg-brand-800/40 px-2 py-0.5 rounded-md">
+                  <span className="text-xs font-mono text-themed bg-themed-muted/40 px-2 py-0.5 rounded-md">
                     {sessionDuration(s)}
                   </span>
                   {(s.tipAmount ?? 0) > 0 && (

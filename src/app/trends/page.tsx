@@ -138,7 +138,7 @@ export default function TrendsPage() {
         <Navbar />
         <div className="flex items-center justify-center py-20">
           <div className="animate-pulse-slow">
-            <div className="w-12 h-12 bg-brand-500 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-brand-500/30">
+            <div className="w-12 h-12 bg-themed rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-themed">
               H
             </div>
           </div>
@@ -150,8 +150,8 @@ export default function TrendsPage() {
   const periodBtnClass = (p: Period) =>
     `px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
       period === p
-        ? "bg-brand-600 text-white shadow-lg shadow-brand-600/30"
-        : "text-gray-400 hover:bg-brand-800/60 hover:text-white"
+        ? "bg-themed-muted text-white shadow-lg shadow-themed"
+        : "text-gray-400 hover:bg-themed-muted/40 hover:text-white"
     }`;
 
   const tooltipStyle = {

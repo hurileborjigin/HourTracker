@@ -36,7 +36,7 @@ export default function Toast({ message, onDismiss, duration = 5000 }: ToastProp
             setVisible(false);
             setTimeout(onDismiss, 300);
           }}
-          className="px-6 py-2 bg-brand-600 text-white rounded-xl text-sm font-medium hover:bg-brand-500 transition-colors"
+          className="px-6 py-2 bg-themed-muted text-white rounded-xl text-sm font-medium hover:bg-themed transition-colors"
         >
           Got it!
         </button>

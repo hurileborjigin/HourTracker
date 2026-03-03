@@ -123,7 +123,7 @@ export default function SummaryPage() {
         <Navbar />
         <div className="flex items-center justify-center py-20">
           <div className="animate-pulse-slow">
-            <div className="w-12 h-12 bg-brand-500 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-brand-500/30">
+            <div className="w-12 h-12 bg-themed rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-themed">
               H
             </div>
           </div>
@@ -167,7 +167,7 @@ export default function SummaryPage() {
               id="includeSalary"
               checked={includeSalary}
               onChange={(e) => setIncludeSalary(e.target.checked)}
-              className="w-4 h-4 rounded bg-brand-950 border-brand-700 text-brand-500 focus:ring-brand-500 focus:ring-offset-0"
+              className="w-4 h-4 rounded bg-brand-950 border-brand-700 text-themed focus:ring-current focus:ring-offset-0"
             />
             <label htmlFor="includeSalary" className="text-sm font-medium text-gray-300">
               Include salary in export
@@ -176,7 +176,7 @@ export default function SummaryPage() {
           <button
             onClick={exportToExcel}
             disabled={completedSessions.length === 0}
-            className="w-full bg-gradient-to-r from-brand-600 to-brand-500 text-white py-3.5 rounded-xl font-semibold hover:from-brand-500 hover:to-brand-400 disabled:opacity-50 transition-all duration-300 shadow-lg shadow-brand-600/25 hover:shadow-brand-500/40 hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2"
+            className="w-full btn-themed text-white py-3.5 rounded-xl font-semibold  disabled:opacity-50 transition-all duration-300 shadow-lg shadow-themed hover:shadow-themed hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2"
           >
             <span>📥</span> Export to Excel
           </button>
@@ -184,7 +184,7 @@ export default function SummaryPage() {
 
         {/* Sessions Table */}
         <div className="glass rounded-2xl overflow-hidden animate-slide-up" style={{ animationDelay: "0.2s" }}>
-          <div className="px-6 py-4 border-b border-brand-800/50">
+          <div className="px-6 py-4 border-b border-themed/20">
             <h2 className="font-semibold text-white">
               Sessions ({completedSessions.length})
             </h2>
@@ -197,7 +197,7 @@ export default function SummaryPage() {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-brand-900/50 text-gray-400">
+                <thead className="bg-black/20 text-gray-400">
                   <tr>
                     <th className="px-4 py-3 text-left font-medium">Date</th>
                     <th className="px-4 py-3 text-left font-medium">Start</th>
@@ -208,7 +208,7 @@ export default function SummaryPage() {
                 </thead>
                 <tbody className="divide-y divide-brand-800/30">
                   {completedSessions.map((s, i) => (
-                    <tr key={s.id} className="hover:bg-brand-800/20 transition-colors animate-fade-in" style={{ animationDelay: `${i * 0.03}s` }}>
+                    <tr key={s.id} className="hover:bg-themed-muted/20 transition-colors animate-fade-in" style={{ animationDelay: `${i * 0.03}s` }}>
                       <td className="px-4 py-3 text-gray-200 font-medium">
                         {format(new Date(s.startedAt), "MMM d")}
                       </td>
@@ -218,7 +218,7 @@ export default function SummaryPage() {
                       <td className="px-4 py-3 text-gray-300">
                         {s.endedAt && format(new Date(s.endedAt), "h:mm a")}
                       </td>
-                      <td className="px-4 py-3 text-right font-mono text-brand-400">
+                      <td className="px-4 py-3 text-right font-mono text-themed">
                         {getHours(s).toFixed(2)}
                       </td>
                       <td className="px-4 py-3 text-right font-mono text-yellow-400">
@@ -227,12 +227,12 @@ export default function SummaryPage() {
                     </tr>
                   ))}
                 </tbody>
-                <tfoot className="bg-brand-900/50 font-semibold">
+                <tfoot className="bg-black/20 font-semibold">
                   <tr>
                     <td className="px-4 py-3 text-white" colSpan={3}>
                       Total
                     </td>
-                    <td className="px-4 py-3 text-right font-mono text-brand-300">
+                    <td className="px-4 py-3 text-right font-mono text-themed-light">
                       {totalHours.toFixed(2)}h
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-yellow-400">

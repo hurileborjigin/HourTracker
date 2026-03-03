@@ -153,7 +153,7 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-pulse-slow">
-          <div className="w-12 h-12 bg-brand-500 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-brand-500/30">
+          <div className="w-12 h-12 bg-themed rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-themed">
             H
           </div>
         </div>
@@ -186,7 +186,7 @@ export default function DashboardPage() {
         {/* Welcome */}
         <div className="animate-fade-in">
           <h1 className="text-2xl font-bold text-white">
-            Welcome back, <span className="text-brand-400">{session.user?.name || "there"}</span> 👋
+            Welcome back, <span className="text-themed">{session.user?.name || "there"}</span> 👋
           </h1>
           <p className="text-gray-400 text-sm mt-1">
             {format(new Date(), "EEEE, MMMM d, yyyy")}
@@ -212,7 +212,7 @@ export default function DashboardPage() {
               <button
                 onClick={handleCheckIn}
                 disabled={actionLoading}
-                className="w-full max-w-xs mx-auto block bg-gradient-to-r from-brand-600 to-brand-500 text-white py-6 rounded-2xl text-xl font-bold hover:from-brand-500 hover:to-brand-400 disabled:opacity-50 transition-all duration-300 shadow-lg shadow-brand-600/30 hover:shadow-brand-500/50 hover:scale-[1.02] active:scale-[0.98] animate-glow"
+                className="w-full max-w-xs mx-auto block btn-themed text-white py-6 rounded-2xl text-xl font-bold  disabled:opacity-50 transition-all duration-300 shadow-lg shadow-themed hover:shadow-brand-500/50 hover:scale-[1.02] active:scale-[0.98] animate-glow-themed"
               >
                 {actionLoading ? (
                   <span className="flex items-center justify-center gap-2">
@@ -230,7 +230,7 @@ export default function DashboardPage() {
           {!showAddForm ? (
             <button
               onClick={() => setShowAddForm(true)}
-              className="w-full glass-light border border-dashed border-brand-700/50 text-gray-400 py-4 rounded-2xl hover:border-brand-500 hover:text-brand-400 transition-all duration-300 hover:shadow-lg hover:shadow-brand-600/10 group"
+              className="w-full glass-light border border-dashed border-themed/30 text-gray-400 py-4 rounded-2xl hover:border-brand-500 hover:text-themed transition-all duration-300 hover:shadow-lg hover:shadow-brand-600/10 group"
             >
               <span className="group-hover:scale-110 inline-block transition-transform">✨</span>
               <span className="ml-2">Add Session Manually</span>

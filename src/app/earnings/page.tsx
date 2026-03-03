@@ -91,7 +91,7 @@ export default function EarningsPage() {
         <Navbar />
         <div className="flex items-center justify-center py-20">
           <div className="animate-pulse-slow">
-            <div className="w-12 h-12 bg-brand-500 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-brand-500/30">
+            <div className="w-12 h-12 bg-themed rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-themed">
               H
             </div>
           </div>
@@ -119,7 +119,7 @@ export default function EarningsPage() {
             <StatsCard icon="💰" label="Tips" value={`€${allTotalTips.toFixed(2)}`} />
             <div className="glass rounded-xl p-2.5 sm:p-4 text-center">
               <div className="text-[10px] sm:text-xs text-gray-400 mb-0.5">🏦 Total</div>
-              <div className="text-sm sm:text-lg font-bold text-brand-300">
+              <div className="text-sm sm:text-lg font-bold text-themed-light">
                 €{(allTotalSalary + allTotalTips).toFixed(2)}
               </div>
             </div>
@@ -143,7 +143,7 @@ export default function EarningsPage() {
             <StatsCard icon="💰" label="Tips" value={`€${periodTotalTips.toFixed(2)}`} />
             <div className="glass rounded-xl p-2.5 sm:p-4 text-center">
               <div className="text-[10px] sm:text-xs text-gray-400 mb-0.5">🏦 Total</div>
-              <div className="text-sm sm:text-lg font-bold text-brand-300">
+              <div className="text-sm sm:text-lg font-bold text-themed-light">
                 €{(periodTotalSalary + periodTotalTips).toFixed(2)}
               </div>
             </div>
@@ -152,7 +152,7 @@ export default function EarningsPage() {
 
         {/* Per-session breakdown table */}
         <div className="glass rounded-2xl overflow-hidden animate-slide-up" style={{ animationDelay: "0.15s" }}>
-          <div className="px-6 py-4 border-b border-brand-800/50">
+          <div className="px-6 py-4 border-b border-themed/20">
             <h2 className="font-semibold text-white">
               Session Breakdown ({periodCompleted.length})
             </h2>
@@ -165,7 +165,7 @@ export default function EarningsPage() {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-brand-900/50 text-gray-400">
+                <thead className="bg-black/20 text-gray-400">
                   <tr>
                     <th className="px-4 py-3 text-left font-medium">Date</th>
                     <th className="px-4 py-3 text-right font-medium">Hours</th>
@@ -182,16 +182,16 @@ export default function EarningsPage() {
                     return (
                       <tr
                         key={s.id}
-                        className="hover:bg-brand-800/20 transition-colors animate-fade-in"
+                        className="hover:bg-themed-muted/20 transition-colors animate-fade-in"
                         style={{ animationDelay: `${i * 0.03}s` }}
                       >
                         <td className="px-4 py-3 text-gray-200 font-medium">
                           {format(new Date(s.startedAt), "MMM d")}
                         </td>
-                        <td className="px-4 py-3 text-right font-mono text-brand-400">
+                        <td className="px-4 py-3 text-right font-mono text-themed">
                           {hours.toFixed(2)}
                         </td>
-                        <td className="px-4 py-3 text-right font-mono text-brand-300">
+                        <td className="px-4 py-3 text-right font-mono text-themed-light">
                           €{salary.toFixed(2)}
                         </td>
                         <td className="px-4 py-3 text-right font-mono text-yellow-400">
@@ -204,13 +204,13 @@ export default function EarningsPage() {
                     );
                   })}
                 </tbody>
-                <tfoot className="bg-brand-900/50 font-semibold">
+                <tfoot className="bg-black/20 font-semibold">
                   <tr>
                     <td className="px-4 py-3 text-white">Total</td>
-                    <td className="px-4 py-3 text-right font-mono text-brand-400">
+                    <td className="px-4 py-3 text-right font-mono text-themed">
                       {periodTotalHours.toFixed(2)}h
                     </td>
-                    <td className="px-4 py-3 text-right font-mono text-brand-300">
+                    <td className="px-4 py-3 text-right font-mono text-themed-light">
                       €{periodTotalSalary.toFixed(2)}
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-yellow-400">
