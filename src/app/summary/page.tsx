@@ -241,7 +241,7 @@ export default function SummaryPage() {
                   {completedSessions.map((s, i) => (
                     <tr key={s.id} className="hover:bg-themed-muted/20 transition-colors animate-fade-in" style={{ animationDelay: `${i * 0.03}s` }}>
                       <td className="px-4 py-3 text-gray-200 font-medium">
-                        {format(new Date(s.startedAt), "MMM d")}
+                        {format(new Date(s.startedAt), "EEE MMM d")}
                       </td>
                       <td className="px-4 py-3 text-gray-300">
                         {format(new Date(s.startedAt), "h:mm a")}

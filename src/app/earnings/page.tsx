@@ -191,7 +191,7 @@ export default function EarningsPage() {
                         style={{ animationDelay: `${i * 0.03}s` }}
                       >
                         <td className="px-4 py-3 text-gray-200 font-medium">
-                          {format(new Date(s.startedAt), "MMM d")}
+                          {format(new Date(s.startedAt), "EEE MMM d")}
                         </td>
                         <td className="px-4 py-3 text-right font-mono text-themed">
                           {hours.toFixed(2)}

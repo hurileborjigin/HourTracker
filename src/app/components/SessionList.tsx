@@ -42,7 +42,7 @@ export default function SessionList({ sessions, onDelete, onEdit }: SessionListP
             >
               <div className="min-w-0 flex-1" onClick={() => onEdit(s)} role="button" tabIndex={0}>
                 <div className="text-sm font-semibold text-white">
-                  {format(new Date(s.startedAt), "MMM d, yyyy")}
+                  {format(new Date(s.startedAt), "EEE MMM d, yyyy")}
                 </div>
                 <div className="text-sm text-gray-400">
                   {format(new Date(s.startedAt), "h:mm a")}
